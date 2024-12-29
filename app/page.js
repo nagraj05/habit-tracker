@@ -1,3 +1,4 @@
+import AuthForm from "@/components/common-components/AuthForm";
 import Image from "next/image";
 
 export default function Home() {
@@ -13,8 +14,9 @@ export default function Home() {
         />
       </div>
       <div className="w-[30%]">
-        {/* Additional content can go here */}
-        <div>hi</div>
+        <div>
+          <AuthForm />
+        </div>
       </div>
     </div>
   );
