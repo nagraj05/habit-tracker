@@ -2,10 +2,12 @@
 import Header from '@/components/common-components/Header';
 import Modal from '@/components/common-components/Modal';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
 export default function Landing() {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   const habitCards = [
     {
@@ -24,6 +26,10 @@ export default function Landing() {
     setIsOpen(!isOpen);
   };
 
+  const handleConfirm = () => {
+    router.push("/landing/createHabit");
+  }
+
   return (
     <div>
       <Header title={"Habit Tracker"}
@@ -39,6 +45,7 @@ export default function Landing() {
         onClose={handleModal}
         title="Add Habit"
         cards={habitCards}
+        onConfirm={handleConfirm}
       />
     </div>
   );
