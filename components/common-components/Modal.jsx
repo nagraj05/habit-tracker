@@ -13,6 +13,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 const Modal = ({
   isOpen,
@@ -24,6 +25,7 @@ const Modal = ({
   onCardSelect,
   onConfirm,
 }) => {
+  const router = useRouter();
   if (colors) {
     return (
       <AlertDialog open={isOpen} onOpenChange={onClose}>
@@ -55,8 +57,8 @@ const Modal = ({
           {cards?.map((card, index) => (
             <Card
               key={index}
-              className="hover:bg-gray-50 cursor-pointer"
-              onClick={() => onCardSelect?.(card)}
+              className="hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer"
+              onClick={() => router.push(card.url)}
             >
               <CardHeader>
                 <CardTitle>{card.title}</CardTitle>

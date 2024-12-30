@@ -3,9 +3,9 @@ import Header from "@/components/common-components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
 import React, { useState } from "react";
 import Modal from "@/components/common-components/Modal";
+import {Textarea} from "@/components/ui/textarea";
 
 const colors = [
   "#FF6B6B", // Red
@@ -25,7 +25,7 @@ const colors = [
   "#95A5A6", // Gray
 ];
 
-export default function CreateHabit() {
+export default function YesOrNo() {
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const [selectedColor, setSelectedColor] = useState(colors[0]);
 
@@ -39,7 +39,7 @@ export default function CreateHabit() {
       <Header
         title="Create Habit"
         buttonName={[
-          <Button key="cancel" variant="outline">
+          <Button key="cancel" variant="outline" onClick={() => history.back()}>
             Cancel
           </Button>,
           <Button key="save">Save</Button>,
@@ -60,7 +60,7 @@ export default function CreateHabit() {
         </div>
         <div className="flex items-center gap-3">
           <Label className="w-28">Notes</Label>
-          <Input placeholder="(Optional)" type="text" className="w-56" />
+          <Textarea placeholder="(Optional)" type="text" className="w-56" />
         </div>
         <div className="flex items-center gap-3">
           <Label className="w-28">Color</Label>
