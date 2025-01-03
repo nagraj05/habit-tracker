@@ -9,7 +9,7 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 
 from database import SessionLocal, engine
-from . import models
+import models
 
 # Create database tables
 models.Base.metadata.create_all(bind=engine)
@@ -83,11 +83,12 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Username already registered")
     
     # Create new user
-    hashed_password = get_password_hash(user.password)
+    # hashed_password = get_password_hash(user.password)
+
     db_user = models.User(
         email=user.email,
         username=user.username,
-        password_hash=hashed_password
+        password_hash=user.password
     )
     db.add(db_user)
     db.commit()
@@ -101,7 +102,8 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         models.User.username == form_data.username
     ).first()
     
-    if not user or not verify_password(form_data.password, user.password_hash):
+    # if not user or not verify_password(form_data.password, user.password_hash):
+    if not user or not user.password_hash == form_data.password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
