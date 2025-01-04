@@ -63,7 +63,7 @@ export default function Measurable() {
             onClick={() => setIsIconModalOpen(true)}
           >
             <selectedIcon.icon className="w-5 h-5 text-black dark:text-white" />
-            </div>
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <Label className="w-28">Color</Label>

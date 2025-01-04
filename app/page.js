@@ -1,6 +1,5 @@
 import AuthForm from "@/components/common-components/AuthForm";
-import Image from "next/image";
-
+import { ModeToggle } from "@/components/common-components/theme-toggle";
 export default function Home() {
   return (
     <div className="flex w-full min-h-screen">
@@ -14,6 +13,9 @@ export default function Home() {
         />
       </div>
       <div className="w-[30%]">
+        <div className="flex justify-end p-1">
+          <ModeToggle />
+        </div>
         <div>
           <AuthForm />
         </div>

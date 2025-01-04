@@ -1,18 +1,18 @@
 import React from "react";
 import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogTitle,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogFooter,
-} from "@/components/ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 const Modal = ({
@@ -28,11 +28,14 @@ const Modal = ({
   onConfirm,
 }) => {
   const router = useRouter();
+
   if (colors) {
     return (
-      <AlertDialog open={isOpen} onOpenChange={onClose}>
-        <AlertDialogContent>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+          </DialogHeader>
           <div className="grid grid-cols-5 gap-4 my-4">
             {colors.map((color, index) => (
               <div
@@ -43,18 +46,23 @@ const Modal = ({
               />
             ))}
           </div>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+          <DialogFooter>
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     );
   }
+
   if (icons) {
     return (
-      <AlertDialog open={isOpen} onOpenChange={onClose}>
-        <AlertDialogContent>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+          </DialogHeader>
           <div className="grid grid-cols-5 gap-4 my-4">
             {icons.map((icon, index) => (
               <div
@@ -66,18 +74,22 @@ const Modal = ({
               </div>
             ))}
           </div>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+          <DialogFooter>
+            <Button variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     );
   }
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent>
-        <AlertDialogTitle>{title}</AlertDialogTitle>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
         <div className="mt-1 space-y-4">
           {cards?.map((card, index) => (
             <Card
@@ -94,12 +106,14 @@ const Modal = ({
             </Card>
           ))}
         </div>
-        <AlertDialogFooter>
-          <AlertDialogAction onClick={onConfirm}>Confirm</AlertDialogAction>
-          <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+        <DialogFooter>
+          <Button onClick={onConfirm}>Confirm</Button>
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

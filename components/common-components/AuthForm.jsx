@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { LogIn, Eye, UserPlus, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function AuthForm() {
   const [activeTab, setActiveTab] = useState("login");
@@ -21,6 +22,7 @@ export default function AuthForm() {
   const handlelogin = (e) => {
     e.preventDefault();
     router.push("/landing");
+    toast.success("Logged in successfully");
   };
 
   return (
