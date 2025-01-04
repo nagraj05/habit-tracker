@@ -21,6 +21,8 @@ const Modal = ({
   title,
   cards,
   colors,
+  icons,
+  onIconSelect,
   onColorSelect,
   onCardSelect,
   onConfirm,
@@ -39,6 +41,29 @@ const Modal = ({
                 style={{ backgroundColor: color }}
                 onClick={() => onColorSelect(color)}
               />
+            ))}
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    );
+  }
+  if (icons) {
+    return (
+      <AlertDialog open={isOpen} onOpenChange={onClose}>
+        <AlertDialogContent>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <div className="grid grid-cols-5 gap-4 my-4">
+            {icons.map((icon, index) => (
+              <div
+                key={index}
+                className="w-12 h-12 rounded-lg cursor-pointer hover:scale-110 transition-transform"
+                onClick={() => onIconSelect(icon)}
+              >
+                <icon.icon />
+              </div>
             ))}
           </div>
           <AlertDialogFooter>
