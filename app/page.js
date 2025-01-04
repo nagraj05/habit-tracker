@@ -12,8 +12,8 @@ export default function Home() {
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="w-[30%]">
-        <div className="flex justify-end p-1">
+      <div className="w-[30%] relative">
+        <div className="absolute top-0 right-0 p-2">
           <ModeToggle />
         </div>
         <div>
