@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import CustomTooltip from "./CustomTooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,12 +36,14 @@ export default function ProfilePic() {
   };
   return (
     <DropdownMenu>
+      <CustomTooltip content="User profile">
       <DropdownMenuTrigger asChild>
         <Avatar className="h-10 w-10 border border-white dark:border-black cursor-pointer hover:opacity-80">
           <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
           <AvatarFallback>JD</AvatarFallback>
         </Avatar>
-      </DropdownMenuTrigger>
+        </DropdownMenuTrigger>
+      </CustomTooltip>
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -84,7 +87,7 @@ export default function ProfilePic() {
           <span>Settings</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-red-600" onClick={handleLogout}>
+        <DropdownMenuItem className="text-red-600 cursor-pointer" onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>
