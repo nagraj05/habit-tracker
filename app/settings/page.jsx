@@ -18,7 +18,7 @@ export default function SettingsPage() {
   );
 
   const avatars = Array.from(
-    { length: 39 },
+    { length: 30 },
     (_, i) => `/assets/profilepics/uifaces-cartoon-image (${i + 1}).jpg`
   );
 
