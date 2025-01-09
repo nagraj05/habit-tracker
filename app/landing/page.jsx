@@ -134,7 +134,7 @@ const Landing = () => {
                       ) : (
                         <Input
                           type="number"
-                          className="w-16 h-8 text-center"
+                          className="w-12 h-8 text-center"
                           placeholder="0"
                         />
                       )}

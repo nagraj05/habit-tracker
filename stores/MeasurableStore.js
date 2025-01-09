@@ -14,6 +14,7 @@ class MeasurableStore {
   isColorModalOpen = false;
   isIconModalOpen = false;
   isDrawerOpen = false;
+  isLoading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -44,6 +45,35 @@ class MeasurableStore {
 
   closeIconModal = () => {
     this.isIconModalOpen = false;
+  };
+
+  save = async () => {
+    this.isLoading = true;
+    try {
+      const existingMeasurable =
+        JSON.parse(localStorage.getItem("measurableHabits")) || [];
+
+      const newMeasurable = {
+        name: this.name,
+        question: this.question,
+        unit: this.unit,
+        target: this.target,
+        notes: this.notes,
+        categories: this.categories,
+        selectedIcon: this.selectedIcon,
+        selectedColor: this.selectedColor,
+      };
+
+      existingMeasurable.push(newMeasurable);
+      localStorage.setItem(
+        "measurableHabits",
+        JSON.stringify(existingMeasurable)
+      );
+    } catch (error) {
+      console.error("Error saving measurable:", error);
+    } finally {
+      this.isLoading = false;
+    }
   };
 }
 
