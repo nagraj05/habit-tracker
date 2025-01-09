@@ -12,6 +12,7 @@ class YesOrNoStore {
   isColorModalOpen = false;
   isIconModalOpen = false;
   isDrawerOpen = false;
+  isLoading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -42,6 +43,37 @@ class YesOrNoStore {
 
   closeIconModal = () => {
     this.isIconModalOpen = false;
+  };
+
+  save = async () => {
+    this.loading = true;
+    try {
+      // Retrieve the existing array from localStorage
+      const existingHabits =
+        JSON.parse(localStorage.getItem("yesNoHabits")) || [];
+
+      // Create a new habit object with all necessary properties
+      const newHabit = {
+        name: this.name,
+        question: this.question,
+        notes: this.notes,
+        categories: this.categories,
+        icon: this.selectedIcon,
+        color: this.selectedColor,
+        type: "yesNo",
+        progress: {}, // You can initialize progress tracking here if needed
+      };
+
+      // Add the new habit to the array
+      existingHabits.push(newHabit);
+
+      // Save the updated array back to localStorage
+      localStorage.setItem("yesNoHabits", JSON.stringify(existingHabits));
+    } catch (error) {
+      this.error = error.message;
+    } finally {
+      this.loading = false;
+    }
   };
 }
 
