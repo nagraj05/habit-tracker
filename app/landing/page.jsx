@@ -43,8 +43,8 @@ export default function Landing() {
         ]}
       />
       <div className="flex flex-col justify-center gap-4 items-center h-96">
-        <h3 className="text-6xl text-gray-500">No tasks to show</h3>
-        <h6 className="text-xl text-gray-700">Click on Add to create a task</h6>
+        <h3 className="text-6xl text-gray-500">No habits to show</h3>
+        <h6 className="text-xl text-gray-700">Click on Add to track your habit</h6>
       </div>
       <Modal
         isOpen={isOpen}
