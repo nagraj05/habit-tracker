@@ -9,11 +9,14 @@ import { LogIn, Eye, UserPlus, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useStore } from "@/utils/StroreProvider";
+import { observer } from "mobx-react-lite";
 
-export default function AuthForm() {
+const AuthForm = observer(() => {
   const [activeTab, setActiveTab] = useState("login");
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const store = useStore().AuthStore;
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -22,7 +25,14 @@ export default function AuthForm() {
   const handlelogin = (e) => {
     e.preventDefault();
     router.push("/landing");
+    store.signIn();
     toast.success("Logged in successfully");
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    store.register();
+    toast.success("Registered successfully");
   };
 
   return (
@@ -46,6 +56,8 @@ export default function AuthForm() {
                     type="email"
                     placeholder="Enter your email"
                     required
+                    value={store.email}
+                    onChange={(e) => store.setData("email", e.target.value)}
                   />
                 </div>
                 <div className="space-y-2 relative">
@@ -55,6 +67,8 @@ export default function AuthForm() {
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     required
+                    value={store.password}
+                    onChange={(e) => store.setData("password", e.target.value)}
                   />
                   <button
                     type="button"
@@ -76,7 +90,7 @@ export default function AuthForm() {
             </TabsContent>
 
             <TabsContent value="register">
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={handleRegister}>
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
                   <Input
@@ -84,6 +98,8 @@ export default function AuthForm() {
                     type="text"
                     placeholder="Enter your full name"
                     required
+                    value={store.name}
+                    onChange={(e) => store.setData("name", e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -93,6 +109,8 @@ export default function AuthForm() {
                     type="email"
                     placeholder="Enter your email"
                     required
+                    value={store.email}
+                    onChange={(e) => store.setData("email", e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -102,6 +120,8 @@ export default function AuthForm() {
                     type="password"
                     placeholder="Choose a password"
                     required
+                    value={store.password}
+                    onChange={(e) => store.setData("password", e.target.value)}
                   />
                 </div>
                 <Button type="submit" className="w-full">
@@ -115,4 +135,6 @@ export default function AuthForm() {
       </Card>
     </div>
   );
-}
+});
+
+export default AuthForm;

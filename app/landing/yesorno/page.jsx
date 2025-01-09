@@ -20,34 +20,16 @@ import icons from "@/lib/icons";
 import colors from "@/lib/colors";
 import categories from "@/lib/categories";
 import CustomTooltip from "@/components/common-components/CustomTooltip";
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/utils/StroreProvider";
 
-export default function YesOrNo() {
-  const [isColorModalOpen, setIsColorModalOpen] = useState(false);
-  const [selectedColor, setSelectedColor] = useState(colors[0]);
-  const [isIconModalOpen, setIsIconModalOpen] = useState(false);
-  const [selectedIcon, setSelectedIcon] = useState(icons[0]);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+const YesOrNo = observer(() => {
+  const store = useStore().YesOrNoStore;
 
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
-    setIsColorModalOpen(false);
-  };
+  const SelectedIconComponent = store.selectedIcon.icon;
 
-  const SelectedIconComponent = selectedIcon.icon;
-
-  const handleCategoryToggle = (category) => {
-    setSelectedCategories((prev) => {
-      if (prev.includes(category)) {
-        return prev.filter((c) => c !== category);
-      } else {
-        return [...prev, category];
-      }
-    });
-  };
-
-  const handleSaveCategories = () => {
-    setIsDrawerOpen(false);
+  const isCategorySelected = (category) => {
+    return store.categories.some((c) => c.name === category.name);
   };
 
   return (
@@ -72,7 +54,13 @@ export default function YesOrNo() {
       <div className="m-4 flex flex-col gap-4">
         <div className="flex items-center gap-3">
           <Label className="w-28">Name</Label>
-          <Input placeholder="e.g. Exercise" type="text" className="w-56" />
+          <Input
+            placeholder="e.g. Exercise"
+            type="text"
+            className="w-56"
+            value={store.name}
+            onChange={(e) => store.setField("name", e.target.value)}
+          />
         </div>
         <div className="flex items-center gap-3">
           <Label className="w-28">Question</Label>
@@ -80,22 +68,30 @@ export default function YesOrNo() {
             placeholder="e.g. Did you exercise today?"
             type="text"
             className="w-56"
+            value={store.question}
+            onChange={(e) => store.setField("question", e.target.value)}
           />
         </div>
         <div className="flex items-center gap-3">
           <Label className="w-28">Notes</Label>
-          <Textarea placeholder="(Optional)" type="text" className="w-56" />
+          <Textarea
+            placeholder="(Optional)"
+            type="text"
+            className="w-56"
+            value={store.notes}
+            onChange={(e) => store.setField("notes", e.target.value)}
+          />
         </div>
         <div className="flex items-center gap-3">
           <Label className="w-28">Categories</Label>
           <div
             className="w-56 min-h-10 p-2 border rounded-md cursor-pointer flex flex-wrap gap-2"
-            onClick={() => setIsDrawerOpen(true)}
+            onClick={() => store.setField("isDrawerOpen", true)}
           >
-            {selectedCategories.length === 0 ? (
+            {store.categories.length === 0 ? (
               <span className="text-gray-500">None</span>
             ) : (
-              selectedCategories.map((category) => {
+              store.categories.map((category) => {
                 const CategoryIcon = category.icon;
                 return (
                   <Badge
@@ -115,7 +111,7 @@ export default function YesOrNo() {
           <Label className="w-28">Icons</Label>
           <div
             className="w-12 h-12 rounded-lg cursor-pointer hover:scale-105 transition-transform flex items-center justify-center border border-black dark:border-white"
-            onClick={() => setIsIconModalOpen(true)}
+            onClick={() => store.setField("isIconModalOpen", true)}
           >
             <SelectedIconComponent className="w-5 h-5 text-black dark:text-white" />
           </div>
@@ -124,32 +120,38 @@ export default function YesOrNo() {
           <Label className="w-28">Color</Label>
           <div
             className="w-12 h-12 rounded-lg cursor-pointer hover:scale-105 transition-transform"
-            onClick={() => setIsColorModalOpen(true)}
-            style={{ backgroundColor: selectedColor }}
+            onClick={() => store.setField("isColorModalOpen", true)}
+            style={{ backgroundColor: store.selectedColor }}
           />
         </div>
       </div>
 
       <Modal
-        isOpen={isColorModalOpen}
-        onClose={() => setIsColorModalOpen(false)}
+        isOpen={store.isColorModalOpen}
+        onClose={() => store.closeColorModal()}
         title="Select Color"
         colors={colors}
-        onColorSelect={handleColorSelect}
-      />
-
-      <Modal
-        isOpen={isIconModalOpen}
-        onClose={() => setIsIconModalOpen(false)}
-        title="Select Icon"
-        icons={icons}
-        onIconSelect={(icon) => {
-          setSelectedIcon(icon);
-          setIsIconModalOpen(false);
+        onColorSelect={(color) => {
+          store.setField("selectedColor", color);
+          store.closeColorModal();
         }}
       />
 
-      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+      <Modal
+        isOpen={store.isIconModalOpen}
+        onClose={() => store.closeIconModal()}
+        title="Select Icon"
+        icons={icons}
+        onIconSelect={(icon) => {
+          store.setField("selectedIcon", icon);
+          store.closeIconModal();
+        }}
+      />
+
+      <Drawer
+        open={store.isDrawerOpen}
+        onOpenChange={(open) => store.setField("isDrawerOpen", open)}
+      >
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>Categories</DrawerTitle>
@@ -163,13 +165,9 @@ export default function YesOrNo() {
               return (
                 <Badge
                   key={category.name}
-                  variant={
-                    selectedCategories.includes(category)
-                      ? "default"
-                      : "outline"
-                  }
+                  variant={isCategorySelected(category) ? "default" : "outline"}
                   className="cursor-pointer p-2 flex gap-2"
-                  onClick={() => handleCategoryToggle(category)}
+                  onClick={() => store.toggleCategory(category)}
                 >
                   <CategoryIcon className="w-4 h-4" />
                   {category.name}
@@ -179,7 +177,7 @@ export default function YesOrNo() {
           </div>
           <DrawerFooter>
             <div className="flex gap-2 justify-center">
-              <Button onClick={handleSaveCategories}>Save</Button>
+              <Button onClick={() => store.closeDrawer()}>Save</Button>
               <DrawerClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DrawerClose>
@@ -189,4 +187,6 @@ export default function YesOrNo() {
       </Drawer>
     </div>
   );
-}
+});
+
+export default YesOrNo;
