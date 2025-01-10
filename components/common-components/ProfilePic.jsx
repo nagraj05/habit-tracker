@@ -47,30 +47,30 @@ export default function ProfilePic() {
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
           <Settings className="mr-2 h-4 w-4" />
           <span>General</span>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
           <Palette className="mr-2 h-4 w-4" />
           <span>Theme</span>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
           <Archive className="mr-2 h-4 w-4" />
           <span>Archived Habits</span>
         </DropdownMenuItem>
-        <DropdownMenuSub>
+        <DropdownMenuSub className="cursor-pointer">
           <DropdownMenuSubTrigger>
             <FileDown className="mr-2 h-4 w-4" />
             <span>Export Data</span>
           </DropdownMenuSubTrigger>
           <DropdownMenuPortal>
             <DropdownMenuSubContent>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
                 <Sheet className="mr-2 h-4 w-4" />
                 <span>CSV</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
                 <FileText className="mr-2 h-4 w-4" />
                 <span>PDF</span>
               </DropdownMenuItem>
@@ -78,11 +78,11 @@ export default function ProfilePic() {
           </DropdownMenuPortal>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
           <User className="mr-2 h-4 w-4" />
           <span>Profile</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate.push("/settings")}>
+        <DropdownMenuItem onClick={() => navigate.push("/settings")} className="cursor-pointer">
           <Settings className="mr-2 h-4 w-4" />
           <span>Settings</span>
         </DropdownMenuItem>
