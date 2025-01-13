@@ -17,6 +17,12 @@ export class AuthStore {
     this[key] = value;
   };
 
+  resetFields() {
+    this.email = "";
+    this.password = "";
+    this.name = ""; 
+  }
+
   signIn = async () => {
     this.loading = true;
     this.error = "";
