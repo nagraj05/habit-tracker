@@ -1,3 +1,4 @@
+import axios from "axios";
 import { makeAutoObservable } from "mobx";
 
 export class AuthStore {
@@ -6,6 +7,7 @@ export class AuthStore {
   name = "";
   error = "";
   loading = false;
+  isAuthenticated = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -17,10 +19,43 @@ export class AuthStore {
 
   signIn = async () => {
     this.loading = true;
+    this.error = "";
+
     try {
-      localStorage.setItem("user", JSON.stringify({ email: this.email }));
+      const response = await axios.post(
+        "/api/auth/login",
+        {
+          email: this.email,
+          password: this.password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const { user, token } = response.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      this.isAuthenticated = true;
+
+      this.password = "";
+      this.email = "";
+
+      return true;
     } catch (error) {
-      this.error = error.message;
+      if (error.response) {
+        this.error = error.response.data.error || "Invalid credentials";
+      } else if (error.request) {
+        this.error = "Network error. Please try again.";
+      } else {
+        this.error = "An unexpected error occurred";
+      }
+
+      return false;
     } finally {
       this.loading = false;
     }
@@ -28,16 +63,46 @@ export class AuthStore {
 
   register = async () => {
     this.loading = true;
+    this.error = "";
     try {
-      localStorage.setItem(
-        "register",
-        JSON.stringify({ email: this.email, name: this.name })
+      const response = await axios.post(
+        "/api/auth/register",
+        {
+          email: this.email,
+          password: this.password,
+          name: this.name,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
+
+      this.email = "";
+      this.password = "";
+      this.name = "";
+
+      return true;
     } catch (error) {
-      this.error = error.message;
+      if (error.response) {
+        this.error = error.response.data.error || "Invalid credentials";
+      } else if (error.request) {
+        this.error = "Network error. Please try again.";
+      } else {
+        this.error = "An unexpected error occurred";
+      }
+
+      return false;
     } finally {
       this.loading = false;
     }
+  };
+
+  logout = async () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    this.isAuthenticated = false;
   };
 }
 

@@ -26,22 +26,25 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useStore } from "@/utils/StroreProvider";
 
 export default function ProfilePic() {
   const navigate = useRouter();
+  const store = useStore().AuthStore;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const success = await store.logout();
     navigate.push("/");
     toast.success("Logged out successfully");
   };
   return (
     <DropdownMenu>
       <CustomTooltip content="User profile">
-      <DropdownMenuTrigger asChild>
-        <Avatar className="h-10 w-10 border border-white dark:border-black cursor-pointer hover:opacity-80">
-          <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
-          <AvatarFallback>JD</AvatarFallback>
-        </Avatar>
+        <DropdownMenuTrigger asChild>
+          <Avatar className="h-10 w-10 border border-white dark:border-black cursor-pointer hover:opacity-80">
+            <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
+            <AvatarFallback>JD</AvatarFallback>
+          </Avatar>
         </DropdownMenuTrigger>
       </CustomTooltip>
       <DropdownMenuContent className="w-56" align="end">
@@ -82,12 +85,18 @@ export default function ProfilePic() {
           <User className="mr-2 h-4 w-4" />
           <span>Profile</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate.push("/settings")} className="cursor-pointer">
+        <DropdownMenuItem
+          onClick={() => navigate.push("/settings")}
+          className="cursor-pointer"
+        >
           <Settings className="mr-2 h-4 w-4" />
           <span>Settings</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-red-600 cursor-pointer" onClick={handleLogout}>
+        <DropdownMenuItem
+          className="text-red-600 cursor-pointer"
+          onClick={handleLogout}
+        >
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>

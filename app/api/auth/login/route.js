@@ -23,7 +23,7 @@ export async function POST(request) {
 
     if (!user) {
       return NextResponse.json(
-        { error: "Invalid credentials" },
+        { error: "User doesn't exist" },
         { status: 401 }
       );
     }

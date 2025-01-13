@@ -22,17 +22,25 @@ const AuthForm = observer(() => {
     setShowPassword(!showPassword);
   };
 
-  const handlelogin = (e) => {
+  const handlelogin = async (e) => {
     e.preventDefault();
-    router.push("/landing");
-    store.signIn();
-    toast.success("Logged in successfully");
+    const success = await store.signIn();
+    if (success) {
+      toast.success("Logged in successfully");
+      router.push("/landing");
+    } else {
+      toast.error(store.error);
+    }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    store.register();
-    toast.success("Registered successfully");
+    const success = await store.register();
+    if (success) {
+      toast.success("Registered successfully");
+    } else {
+      toast.error(store.error);
+    }
   };
 
   return (
