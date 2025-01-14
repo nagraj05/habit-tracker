@@ -26,7 +26,7 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <Header title="Settings" />
+      <Header title="Profile" />
       <div className="m-4 flex flex-col gap-4">
         <div className="flex items-center gap-3">
           <Label className="w-28">Avatar</Label>
