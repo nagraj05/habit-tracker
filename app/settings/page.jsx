@@ -17,9 +17,7 @@ export default function SettingsPage() {
   const [selectedAvatar, setSelectedAvatar] = useState(
     "/assets/profilepics/uifaces-cartoon-image (1).jpg"
   );
-  const name = JSON.parse(localStorage.getItem('user')).name
-  const email = JSON.parse(localStorage.getItem('user')).email
-  const id = JSON.parse(localStorage.getItem('user')).id
+  const { name, email, id } = JSON.parse(localStorage.getItem('user'));
 
   const avatars = Array.from(
     { length: 30 },
