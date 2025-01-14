@@ -10,12 +10,16 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
 
 export default function SettingsPage() {
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState(
     "/assets/profilepics/uifaces-cartoon-image (1).jpg"
   );
+  const name = JSON.parse(localStorage.getItem('user')).name
+  const email = JSON.parse(localStorage.getItem('user')).email
+  const id = JSON.parse(localStorage.getItem('user')).id
 
   const avatars = Array.from(
     { length: 30 },
@@ -34,6 +38,30 @@ export default function SettingsPage() {
           >
             <AvatarImage src={selectedAvatar} />
           </Avatar>
+        </div>
+        <div className="flex items-center gap-3">
+          <Label className="w-28">Name</Label>
+          <Input
+           value={name}
+           className="w-56"
+           readOnly
+           />
+        </div>
+        <div className="flex items-center gap-3">
+          <Label className="w-28">Email</Label>
+          <Input
+           value={email}
+           className="w-56"
+           readOnly
+           />
+        </div>
+        <div className="flex items-center gap-3">
+          <Label className="w-28">ID</Label>
+          <Input
+           value={id}
+           className="w-56"
+           readOnly
+           />
         </div>
       </div>
 

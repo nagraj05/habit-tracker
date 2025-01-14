@@ -31,6 +31,7 @@ import { useStore } from "@/utils/StroreProvider";
 export default function ProfilePic() {
   const navigate = useRouter();
   const store = useStore().AuthStore;
+  const name = JSON.parse(localStorage.getItem('user')).name
 
   const handleLogout = async () => {
     const success = await store.logout();
@@ -48,7 +49,7 @@ export default function ProfilePic() {
         </DropdownMenuTrigger>
       </CustomTooltip>
       <DropdownMenuContent className="w-56" align="end">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>{name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="cursor-pointer">
           <Settings className="mr-2 h-4 w-4" />
