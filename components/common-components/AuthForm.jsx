@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { LogIn, Eye, UserPlus, EyeOff } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
+import { LogIn, Eye, UserPlus, EyeOff, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useStore } from "@/utils/StroreProvider";
@@ -97,9 +96,22 @@ const AuthForm = observer(() => {
                     )}
                   </button>
                 </div>
-                <Button type="submit" className="w-full">
-                  <LogIn className="mr-2 h-4 w-4" />
-                  Login
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={store.loading}
+                >
+                  {store.loading ? (
+                    <>
+                      <Loader className="mr-2 h-4 w-4 animate-spin" />
+                      Logging in...
+                    </>
+                  ) : (
+                    <>
+                      <LogIn className="mr-2 h-4 w-4" />
+                      Login
+                    </>
+                  )}
                 </Button>
               </form>
             </TabsContent>
@@ -150,9 +162,22 @@ const AuthForm = observer(() => {
                     )}
                   </button>
                 </div>
-                <Button type="submit" className="w-full">
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  Register
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={store.loading}
+                >
+                  {store.loading ? (
+                    <>
+                      <Loader className="mr-2 h-4 w-4 animate-spin" />
+                      Registering...
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus className="mr-2 h-4 w-4" />
+                      Register
+                    </>
+                  )}
                 </Button>
               </form>
             </TabsContent>
