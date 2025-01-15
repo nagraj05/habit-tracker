@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useStore } from "@/utils/StroreProvider";
 import { observer } from "mobx-react-lite";
+import Link from "next/link";
 
 const AuthForm = observer(() => {
   const [activeTab, setActiveTab] = useState("login");
@@ -156,6 +157,19 @@ const AuthForm = observer(() => {
               </form>
             </TabsContent>
           </Tabs>
+          {activeTab === "login" && (
+            <div className="text-center mt-4">
+              <h1>
+                Forgot Password{" "}
+                <Link
+                  href={"/reset-password"}
+                  className="text-blue-500 text-md hover:underline"
+                >
+                  Click Here
+                </Link>
+              </h1>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
