@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Check } from "lucide-react";
 import { useTheme } from "next-themes";
 import CustomTooltip from "./CustomTooltip";
 
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme({defaultTheme: "system"});
 
   return (
     <DropdownMenu>
@@ -30,23 +30,26 @@ export function ModeToggle() {
       <DropdownMenuContent align="end">
         <DropdownMenuItem
           onClick={() => setTheme("light")}
-          className="cursor-pointer"
+          className="cursor-pointer flex items-center justify-between"
         >
-          Light
+          <span>Light</span>
+          {theme === "light" && <Check className="w-4 h-4" />}
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme("dark")}
-          className="cursor-pointer"
+          className="cursor-pointer flex items-center justify-between"
         >
-          Dark
+          <span>Dark</span>
+          {theme === "dark" && <Check className="w-4 h-4" />}
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme("system")}
-          className="cursor-pointer"
+          className="cursor-pointer flex items-center justify-between"
         >
-          System
+          <span>System</span>
+          {theme === "system" && <Check className="w-4 h-4" />}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
