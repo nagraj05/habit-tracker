@@ -54,7 +54,7 @@ const AuthForm = observer(() => {
             value={activeTab}
             onValueChange={(value) => {
               setActiveTab(value);
-              store.resetFields(); 
+              store.resetFields();
             }}
           >
             <TabsList className="grid w-full grid-cols-2">
@@ -127,16 +127,27 @@ const AuthForm = observer(() => {
                     onChange={(e) => store.setData("email", e.target.value)}
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 relative">
                   <Label htmlFor="register-password">Password</Label>
                   <Input
                     id="register-password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Choose a password"
                     required
                     value={store.password}
                     onChange={(e) => store.setData("password", e.target.value)}
                   />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute top-8 right-0 pr-3 flex items-center text-sm leading-5"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
                 </div>
                 <Button type="submit" className="w-full">
                   <UserPlus className="mr-2 h-4 w-4" />
