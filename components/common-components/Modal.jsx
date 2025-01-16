@@ -107,7 +107,7 @@ const Modal = ({
           ))}
         </div>
         <DialogFooter>
-          <Button onClick={onConfirm}>Confirm</Button>
+          {/* <Button onClick={onConfirm}>Confirm</Button> */}
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import CustomTooltip from "./CustomTooltip";
 import {
@@ -31,7 +31,16 @@ import { useStore } from "@/utils/StroreProvider";
 export default function ProfilePic() {
   const navigate = useRouter();
   const store = useStore().AuthStore;
-  const name = JSON.parse(localStorage.getItem("user")).name;
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        setName(user.name);
+      }
+    }
+  }, []);
 
   const handleLogout = async () => {
     const success = await store.logout();
