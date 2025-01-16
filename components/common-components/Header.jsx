@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
+import dynamic from "next/dynamic";
 import { ModeToggle } from "./theme-toggle";
-import ProfilePic from "./ProfilePic";
+
+const ProfilePic = dynamic(() => import("./ProfilePic"), { ssr: false });
 
 export default function Header({ title, buttonName = [] }) {
   return (

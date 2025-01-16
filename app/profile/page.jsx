@@ -1,6 +1,6 @@
 "use client";
 import Header from "@/components/common-components/Header";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -17,7 +17,31 @@ export default function ProfilePage() {
   const [selectedAvatar, setSelectedAvatar] = useState(
     "/assets/profilepics/uifaces-cartoon-image (1).jpg"
   );
-  const { name, email, id } = JSON.parse(localStorage.getItem('user'));
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    id: "",
+  });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    if (typeof window !== "undefined") {
+      try {
+        const user = localStorage.getItem("user");
+        if (user) {
+          const parsedUser = JSON.parse(user);
+          setUserData({
+            name: parsedUser.name || "",
+            email: parsedUser.email || "",
+            id: parsedUser.id || "",
+          });
+        }
+      } catch (error) {
+        console.error("Error loading user data:", error);
+      }
+    }
+  }, []);
 
   const avatars = Array.from(
     { length: 30 },
@@ -39,27 +63,15 @@ export default function ProfilePage() {
         </div>
         <div className="flex items-center gap-3">
           <Label className="w-28">Name</Label>
-          <Input
-           value={name}
-           className="w-56"
-           readOnly
-           />
+          <Input value={userData.name} className="w-56" readOnly />
         </div>
         <div className="flex items-center gap-3">
           <Label className="w-28">Email</Label>
-          <Input
-           value={email}
-           className="w-56"
-           readOnly
-           />
+          <Input value={userData.email} className="w-56" readOnly />
         </div>
         <div className="flex items-center gap-3">
           <Label className="w-28">ID</Label>
-          <Input
-           value={id}
-           className="w-56"
-           readOnly
-           />
+          <Input value={userData.id} className="w-56" readOnly />
         </div>
       </div>
 
