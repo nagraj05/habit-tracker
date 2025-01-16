@@ -31,14 +31,13 @@ import { useStore } from "@/utils/StroreProvider";
 export default function ProfilePic() {
   const navigate = useRouter();
   const store = useStore().AuthStore;
-  const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user) {
-        setName(user.name);
-      }
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setUserName(parsedUser.name);
     }
   }, []);
 
@@ -47,18 +46,21 @@ export default function ProfilePic() {
     navigate.push("/");
     toast.success("Logged out successfully");
   };
+
   return (
     <DropdownMenu>
       <CustomTooltip content="User profile">
         <DropdownMenuTrigger asChild>
           <Avatar className="h-10 w-10 border border-white dark:border-black cursor-pointer hover:opacity-80">
             <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
-            <AvatarFallback>JD</AvatarFallback>
+            <AvatarFallback>
+              {userName ? userName.slice(0, 2).toUpperCase() : ""}
+            </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
       </CustomTooltip>
       <DropdownMenuContent className="w-56" align="end">
-        <DropdownMenuLabel>{name}</DropdownMenuLabel>
+        <DropdownMenuLabel>{userName}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="cursor-pointer">
           <Settings className="mr-2 h-4 w-4" />
@@ -72,8 +74,8 @@ export default function ProfilePic() {
           <Archive className="mr-2 h-4 w-4" />
           <span>Archived Habits</span>
         </DropdownMenuItem>
-        <DropdownMenuSub className="cursor-pointer">
-          <DropdownMenuSubTrigger>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger className="cursor-pointer">
             <FileDown className="mr-2 h-4 w-4" />
             <span>Export Data</span>
           </DropdownMenuSubTrigger>
