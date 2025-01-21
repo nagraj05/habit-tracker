@@ -18,6 +18,29 @@ model User {
   email     String   @unique
   password  String
   name      String?
+  habits    Habit[]  // Relation to habits
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Habit {
+  id          String   @id @default(cuid())
+  name        String
+  type        HabitType // YES_NO or MEASURABLE
+  question    String
+  unit        String?  // Only for MEASURABLE
+  target      Float?   // Only for MEASURABLE
+  notes       String?
+  iconName    String
+  colorHex    String
+  categories  String[] // Store category names as array
+  userId      String   // Foreign key to User
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum HabitType {
+  YES_NO
+  MEASURABLE
 }

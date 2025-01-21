@@ -1,6 +1,8 @@
 import { makeAutoObservable } from "mobx";
 import colors from "@/lib/colors";
 import icons from "@/lib/icons";
+import { toast } from "sonner";
+import axios from "axios";
 
 class YesOrNoStore {
   name = "";
@@ -12,9 +14,22 @@ class YesOrNoStore {
   isColorModalOpen = false;
   isIconModalOpen = false;
   isDrawerOpen = false;
+  isLoading = false;
+  userEmail = "";
+  error = "";
 
   constructor() {
     makeAutoObservable(this);
+    if (typeof window !== "undefined") {
+      this.loadUserEmail();
+    }
+  }
+
+  loadUserEmail() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user?.email) {
+      this.userEmail = user.email;
+    }
   }
 
   setField = (key, value) => {
@@ -24,10 +39,8 @@ class YesOrNoStore {
   toggleCategory = (category) => {
     const index = this.categories.findIndex((c) => c.name === category.name);
     if (index !== -1) {
-      // Category exists, remove it
       this.categories = this.categories.filter((_, i) => i !== index);
     } else {
-      // Category doesn't exist, add it
       this.categories = [...this.categories, category];
     }
   };
@@ -42,6 +55,48 @@ class YesOrNoStore {
 
   closeIconModal = () => {
     this.isIconModalOpen = false;
+  };
+
+  saveHabit = async () => {
+    this.isLoading = true;
+    this.error = "";
+    try {
+      const habitData = {
+        name: this.name,
+        type: "YES_NO",
+        question: this.question,
+        notes: this.notes,
+        iconName: this.selectedIcon.name,
+        colorHex: this.selectedColor,
+        categories: this.categories.map((cat) => cat.name),
+        userEmail: this.userEmail,
+      };
+
+      const response = await axios.post("/api/habits", habitData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      toast.success("Habit created successfully!");
+      return true;
+    } catch (error) {
+      console.log("Failed to save habit:", error);
+      this.error =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to create habit";
+      toast.error(this.error);
+      return false;
+    } finally {
+      this.isLoading = false;
+    }
+  };
+
+  validate = () => {
+    if (!this.name) return "Name is required";
+    if (!this.question) return "Question is required";
+    return null;
   };
 }
 

@@ -7,7 +7,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
@@ -24,14 +23,15 @@ import {
   Sheet,
   FileText,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useStore } from "@/utils/StroreProvider";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePic() {
-  const navigate = useRouter();
   const store = useStore().AuthStore;
   const [userName, setUserName] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -43,8 +43,8 @@ export default function ProfilePic() {
 
   const handleLogout = async () => {
     const success = await store.logout();
-    navigate.push("/");
     toast.success("Logged out successfully");
+    router.push("/");
   };
 
   return (
@@ -79,34 +79,34 @@ export default function ProfilePic() {
             <FileDown className="mr-2 h-4 w-4" />
             <span>Export Data</span>
           </DropdownMenuSubTrigger>
-          <DropdownMenuPortal>
-            <DropdownMenuSubContent>
-              <DropdownMenuItem className="cursor-pointer">
-                <Sheet className="mr-2 h-4 w-4" />
-                <span>CSV</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                <FileText className="mr-2 h-4 w-4" />
-                <span>PDF</span>
-              </DropdownMenuItem>
-            </DropdownMenuSubContent>
-          </DropdownMenuPortal>
+          <DropdownMenuSubContent>
+            <DropdownMenuItem className="cursor-pointer">
+              <Sheet className="mr-2 h-4 w-4" />
+              <span>CSV</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              <FileText className="mr-2 h-4 w-4" />
+              <span>PDF</span>
+            </DropdownMenuItem>
+          </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          className="cursor-pointer"
-          onClick={() => navigate.push("/profile")}
-        >
-          <User className="mr-2 h-4 w-4" />
-          <span>Profile</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => navigate.push("/settings")}
-          className="cursor-pointer"
-        >
-          <Settings className="mr-2 h-4 w-4" />
-          <span>Settings</span>
-        </DropdownMenuItem>
+        <Link href="/profile" passHref>
+          <DropdownMenuItem asChild>
+            <span className="cursor-pointer flex items-center">
+              <User className="mr-2 h-4 w-4" />
+              Profile
+            </span>
+          </DropdownMenuItem>
+        </Link>
+        <Link href="/settings" passHref>
+          <DropdownMenuItem asChild>
+            <span className="cursor-pointer flex items-center">
+              <Settings className="mr-2 h-4 w-4" />
+              Settings
+            </span>
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="text-red-600 cursor-pointer"

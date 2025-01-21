@@ -21,14 +21,25 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
+import { useRouter } from "next/navigation";
 
 const Measurable = observer(() => {
   const store = useStore().MeasurableStore;
+  const router = useRouter();
 
   const SelectedIconComponent = store.selectedIcon.icon;
 
   const isCategorySelected = (category) => {
     return store.categories.some((c) => c.name === category.name);
+  };
+
+  const handleSave = async () => {
+    const success = await store.saveHabit();
+    if (success) {
+      router.push("/landing");
+    } else {
+      toast.error("An error occurred. Please check your input and try again.");
+    }
   };
 
   return (
@@ -39,7 +50,9 @@ const Measurable = observer(() => {
           <Button key="cancel" variant="outline" onClick={() => history.back()}>
             Cancel
           </Button>,
-          <Button key="save">Save</Button>,
+          <Button key="save" onClick={handleSave}>
+            Save
+          </Button>,
         ]}
       />
       <div className="m-4 flex flex-col gap-4 ">

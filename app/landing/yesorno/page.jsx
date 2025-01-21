@@ -22,14 +22,25 @@ import categories from "@/lib/categories";
 import CustomTooltip from "@/components/common-components/CustomTooltip";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/utils/StroreProvider";
+import { useRouter } from "next/navigation";
 
 const YesOrNo = observer(() => {
   const store = useStore().YesOrNoStore;
+  const router = useRouter()
 
   const SelectedIconComponent = store.selectedIcon.icon;
 
   const isCategorySelected = (category) => {
     return store.categories.some((c) => c.name === category.name);
+  };
+
+  const handleSave = async () => {
+    const success = await store.saveHabit();
+    if (success) {
+      router.push("/landing");
+    } else {
+      toast.error("An error occurred. Please check your input and try again.");
+    }
   };
 
   return (
@@ -47,7 +58,9 @@ const YesOrNo = observer(() => {
             </Button>
           </CustomTooltip>,
           <CustomTooltip content={"Save the form"} key="save">
-            <Button key="save">Save</Button>
+            <Button key="save" onClick={handleSave}>
+              Save
+            </Button>
           </CustomTooltip>,
         ]}
       />

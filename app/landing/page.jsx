@@ -2,12 +2,16 @@
 import Header from "@/components/common-components/Header";
 import Modal from "@/components/common-components/Modal";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Landing() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [habits, setHabits] = useState([]);
+  const [userEmail, setUserEmail] = useState("");
 
   const habitCards = [
     {
@@ -31,6 +35,31 @@ export default function Landing() {
   const handleConfirm = () => {
     router.push("/landing/measurable");
   };
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      setUserEmail(parsedUser.name);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchHabits = async () => {
+      try {
+        const response = await axios.get(`/api/habits`, {
+          params: { email: userEmail },
+        });
+        setHabits(response.data);
+      } catch (error) {
+        console.error("Error fetching habits:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHabits();
+  }, []);
 
   return (
     <div>
