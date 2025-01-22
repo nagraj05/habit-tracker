@@ -1,17 +1,52 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import Header from "@/components/common-components/Header";
 import Modal from "@/components/common-components/Modal";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import HabitTracker from "@/components/common-components/HabitTracker";
+import {
+  Home,
+  User,
+  Settings,
+  Bell,
+  Calendar,
+  Dumbbell,
+  Apple,
+  Banana,
+  Pizza,
+  Bed,
+  IceCreamBowl,
+  Heart,
+  Star,
+  Martini,
+  Coffee,
+} from "lucide-react";
+
+const icons = {
+  Home: Home,
+  User: User,
+  Settings: Settings,
+  Bell: Bell,
+  Calendar: Calendar,
+  Dumbbell: Dumbbell,
+  Apple: Apple,
+  Banana: Banana,
+  Pizza: Pizza,
+  Bed: Bed,
+  IceCreamBowl: IceCreamBowl,
+  Heart: Heart,
+  Star: Star,
+  Martini: Martini,
+  Coffee: Coffee,
+};
 
 export default function Landing() {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
   const [habits, setHabits] = useState([]);
-  const [userEmail, setUserEmail] = useState("");
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   const habitCards = [
     {
@@ -36,13 +71,9 @@ export default function Landing() {
     router.push("/landing/measurable");
   };
 
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      const parsedUser = JSON.parse(user);
-      setUserEmail(parsedUser.name);
-    }
-  }, []);
+  const userString = localStorage.getItem("user");
+  const user = JSON.parse(userString);
+  const userEmail = user?.email;
 
   useEffect(() => {
     const fetchHabits = async () => {
@@ -71,9 +102,8 @@ export default function Landing() {
           </Button>,
         ]}
       />
-      <div className="flex flex-col justify-center gap-4 items-center h-96">
-        <h3 className="text-6xl text-gray-500">No habits to show</h3>
-        <h6 className="text-xl text-gray-700">Click on Add to track your habit</h6>
+      <div className=" h-96">
+        {!loading && habits.length > 0 && <HabitTracker habits={habits} />}
       </div>
       <Modal
         isOpen={isOpen}
