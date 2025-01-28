@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { StoreProvider } from "@/utils/StroreProvider";
+import SplashCursor from "@/SplashCursor/SplashCursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
           >
             {children}
             <Toaster />
+            <SplashCursor />
           </ThemeProvider>
         </StoreProvider>
       </body>
